@@ -69,13 +69,11 @@ def main():
             # check what the user wrote
             if text == 'да':
                 send_message(chat_id, 'чем вам помочь?')
+            elif text == '/Nura':
+                send_message(chat_id, 'Мирон пидарас')
             else:
                 send_message(chat_id)
         # if there is not any new message, then just continue
         else:
             continue
         sleep(1)
-
-
-if __name__ == '__main__':
-    main()
