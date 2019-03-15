@@ -1,79 +1,42 @@
-import requests
+import os
+
+import telebot
+from flask import Flask, request
+
 import misc
-from time import sleep
-
-# import json
-token = misc.token
-# https://api.telegram.org/bot714693425:AAEBg1WxHKJZXwS8roORspGIq56U_s4Y6E4/sendmessage?chat_id=335812792&text=Hello
-URL = 'https://api.telegram.org/bot' + token + '/'
-
-global last_update_id
-last_update_id = 0
 
 
-def get_updates():
-    # Take last updates(chats) and return it
-    url = URL + 'getUpdates'
-    r = requests.get(url)
-    return r.json()
+server = Flask(__name__)
+bot = telebot.TeleBot(misc.token)
 
 
-def get_message():
-    # function take data from chats, and return last message of user
-    data = get_updates()
-    # take last update
-    last_object = data['result'][-1]
-    current_update_id = last_object['update_id']
-    '''
-    Compare previous message and this last message
-    if last message is different , then return parameters of message
-    else -->  return None
-    '''
-    global last_update_id
-    if last_update_id != current_update_id:
-        last_update_id = current_update_id
-
-        '''
-        get variables chat_id and text from json object from telegram
-        '''
-        chat_id = last_object['message']['chat']['id']
-        message_text = last_object['message']['text']
-
-        # creating a dictionary called message, which include important variables of last message in telegram
-        message = {'chat_id': chat_id,
-                   'text': message_text}
-        return message
-    return None
+@bot.message_handler(commands=['start'])
+def start(message):
+    bot.reply_to(message, 'Hello, ' + message.from_user.first_name)
 
 
-def send_message(chat_id, text='I did not understand you'):
-    # function for sending message. if we dont give variable text, by default it will be <I did not understand you>
-
-    url = URL + 'sendmessage?chat_id={}&text={}'.format(chat_id, text)
-    requests.get(url)
+@bot.message_handler(func=lambda message: True, content_types=['text'])
+def echo_message(message):
+    bot.reply_to(message,message.text)
 
 
-def main():
-    # d = get_updates()
+@server.route('/' + misc.token, methods=['POST'])
+def getMessage():
+    bot.process_new_updates([telebot.types.Update.de_json(request.stream.read().decode("utf-8"))])
+    return "!", 200
 
-    # with open('updates.json','w') as file:
-    #    json.dump(d, file, indent=2, ensure_ascii=False)
-    while True:
-        answer = get_message()
-        # check that message exists
-        if answer is not None:
-            # take important variables of message
-            chat_id = answer['chat_id']
-            text = answer['text']
 
-            # check what the user wrote
-            if text == 'да':
-                send_message(chat_id, 'чем вам помочь?')
-            elif text == '/Nura':
-                send_message(chat_id, 'Мирон пидарас')
-            else:
-                send_message(chat_id)
-        # if there is not any new message, then just continue
-        else:
-            continue
-        sleep(1)
+@server.route("/")
+def webhook():
+    bot.remove_webhook()
+    bot.set_webhook(url='https://telebotvk.herokuapp.com/' + misc.token)
+    return "!", 200
+
+
+@bot.message_handler(content_types=["text"])
+def repeat_all_messages(message):
+    bot.send_message(message.chat.id, message.text)
+
+
+if __name__=='__main__':
+    server.run(host="0.0.0.0", port=int(os.environ.get('PORT', 5000)))
