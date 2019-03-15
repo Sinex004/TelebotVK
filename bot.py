@@ -19,7 +19,7 @@ def start(message):
 def echo_message(message):
     bot.reply_to(message, message.text)
 
-
+'''
 @server.route('/bot' + misc.token, methods=['POST'])
 def getMessage():
     bot.process_new_updates([telebot.types.Update.de_json(request.stream.read().decode("utf-8"))])
@@ -32,11 +32,8 @@ def webhook():
     bot.set_webhook(url='https://telebotvk.herokuapp.com/bot')
     return "!", 200
 
-
-@bot.message_handler(content_types=["text"])
-def repeat_all_messages(message):
-    bot.send_message(message.chat.id, message.text)
-
+'''
 
 if __name__=='__main__':
-    server.run(host="0.0.0.0", port=int(os.environ.get('PORT', 5000)))
+    bot.polling()
+    # server.run(host="0.0.0.0", port=int(os.environ.get('PORT', 5000)))

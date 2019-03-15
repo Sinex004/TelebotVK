@@ -5,4 +5,3 @@ heroku
 six==1.12.0
 Flask==1.0.2
 pyTelegramBotAPI==3.6.6
-gunicorn
