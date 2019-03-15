@@ -17,10 +17,10 @@ def start(message):
 
 @bot.message_handler(func=lambda message: True, content_types=['text'])
 def echo_message(message):
-    bot.reply_to(message,message.text)
+    bot.reply_to(message, message.text)
 
 
-@server.route('/' + misc.token, methods=['POST'])
+@server.route('/bot' + misc.token, methods=['POST'])
 def getMessage():
     bot.process_new_updates([telebot.types.Update.de_json(request.stream.read().decode("utf-8"))])
     return "!", 200
@@ -29,7 +29,7 @@ def getMessage():
 @server.route("/")
 def webhook():
     bot.remove_webhook()
-    bot.set_webhook(url='https://telebotvk.herokuapp.com/' + misc.token)
+    bot.set_webhook(url='https://telebotvk.herokuapp.com/bot')
     return "!", 200
 
 
