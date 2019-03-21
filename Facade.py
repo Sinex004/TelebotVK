@@ -27,6 +27,10 @@ class _Bot(object):
             self.bot.remove_webhook()
             self.bot.set_webhook(url='https://telebotvk.herokuapp.com/' + misc.token)
             return "!", 200
+
+        self.bot.enable_save_next_step_handlers(delay=2)
+        self.bot.load_next_step_handlers()
+
         server.run(host="0.0.0.0", port=int(os.environ.get('PORT', 5000)))
 
     def getBot(self):
