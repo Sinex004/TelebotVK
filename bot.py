@@ -1,7 +1,7 @@
 import os
 
 import telebot
-# from flask import Flask, request
+from flask import Flask, request
 from telebot import types
 from Events import User
 from Facade import BotFacade
@@ -9,8 +9,8 @@ from Facade import BotFacade
 global dict_users, events
 dict_users = {}
 events = {}
-# server = Flask(__name__)
-# bot = telebot.TeleBot(misc.token)
+server = Flask(__name__)
+bot = telebot.TeleBot(misc.token)
 
 facade = BotFacade()
 bot = facade.getBot()
@@ -68,6 +68,6 @@ bot.load_next_step_handlers()
 
 if __name__=='__main__':
     facade.startBot()
-    # bot.remove_webhook()
-    # bot.polling()
-    # server.run(host="0.0.0.0", port=int(os.environ.get('PORT', 5000)))
+    bot.remove_webhook()
+    bot.polling()
+    server.run(host="0.0.0.0", port=int(os.environ.get('PORT', 5000)))
