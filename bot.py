@@ -27,16 +27,20 @@ def echo_message(message):
     bot.reply_to(message, message.text)
 
 
-'''@server.route('/bot' + misc.token, methods=['POST'])
+@server.route('/' + misc.token, methods=['POST'])
 def getMessage():
     bot.process_new_updates([telebot.types.Update.de_json(request.stream.read().decode("utf-8"))])
     return "!", 200
+
+
 @server.route("/")
 def webhook():
     bot.remove_webhook()
-    bot.set_webhook(url='https://telebotvk.herokuapp.com/bot')
+    bot.set_webhook(url='https://telebotvk.herokuapp.com/'+ misc.token)
     return "!", 200
-'''
+
+
 if __name__=='__main__':
+    bot.remove_webhook()
     bot.polling()
     # server.run(host="0.0.0.0", port=int(os.environ.get('PORT', 5000)))
