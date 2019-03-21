@@ -51,22 +51,20 @@ def phone(message):
 
 
 
-#dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-# @server.route('/' + misc.token, methods=['POST'])
-# def getMessage():
-#     bot.process_new_updates([telebot.types.Update.de_json(request.stream.read().decode("utf-8"))])
-#     return "!", 200
+@server.route('/' + misc.token, methods=['POST'])
+def getMessage():
+    bot.process_new_updates([telebot.types.Update.de_json(request.stream.read().decode("utf-8"))])
+    return "!", 200
 
-#
-# @server.route("/")
-# def webhook():
-#     bot.remove_webhook()
-#     bot.set_webhook(url='https://telebotvk.herokuapp.com/'+ misc.token)
-#     return "!", 200
 
-# bot.enable_save_next_step_handlers(delay=2)
-# bot.load_next_step_handlers()
-# dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+@server.route("/")
+def webhook():
+    bot.remove_webhook()
+    bot.set_webhook(url='https://telebotvk.herokuapp.com/'+ misc.token)
+    return "!", 200
+
+bot.enable_save_next_step_handlers(delay=2)
+bot.load_next_step_handlers()
 
 if __name__=='__main__':
     facade.startBot()
