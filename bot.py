@@ -1,17 +1,20 @@
 import os
 
 import telebot
-from flask import Flask, request
+# from flask import Flask, request
 from telebot import types
 import misc
 from Events import User
+from Facade import BotFacade
 
 global dict_users, events
 dict_users = {}
 events = {}
-server = Flask(__name__)
-bot = telebot.TeleBot(misc.token)
+# server = Flask(__name__)
+# bot = telebot.TeleBot(misc.token)
 
+facade = BotFacade()
+bot = facade.getBot()
 
 @bot.message_handler(commands=['start'])
 def start(message):
@@ -57,23 +60,24 @@ def phone(message):
 #     bot.send_message(message.chat.id, "Привет! Нажми на кнопку.", reply_markup=keyboard)
 
 
-@server.route('/' + misc.token, methods=['POST'])
-def getMessage():
-    bot.process_new_updates([telebot.types.Update.de_json(request.stream.read().decode("utf-8"))])
-    return "!", 200
-
-
-@server.route("/")
-def webhook():
-    bot.remove_webhook()
-    bot.set_webhook(url='https://telebotvk.herokuapp.com/'+ misc.token)
-    return "!", 200
+# @server.route('/' + misc.token, methods=['POST'])
+# def getMessage():
+#     bot.process_new_updates([telebot.types.Update.de_json(request.stream.read().decode("utf-8"))])
+#     return "!", 200
+#
+#
+# @server.route("/")
+# def webhook():
+#     bot.remove_webhook()
+#     bot.set_webhook(url='https://telebotvk.herokuapp.com/'+ misc.token)
+#     return "!", 200
 
 
 bot.enable_save_next_step_handlers(delay=2)
 bot.load_next_step_handlers()
 
 if __name__=='__main__':
-    bot.remove_webhook()
-    bot.polling()
+    facade.startBot()
+    # bot.remove_webhook()
+    # bot.polling()
     # server.run(host="0.0.0.0", port=int(os.environ.get('PORT', 5000)))
