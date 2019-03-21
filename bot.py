@@ -3,7 +3,6 @@ import os
 import telebot
 # from flask import Flask, request
 from telebot import types
-import misc
 from Events import User
 from Facade import BotFacade
 
@@ -51,20 +50,13 @@ def phone(message):
     bot.send_message(message.chat.id, "Отправь мне свой номер телефона для брони", reply_markup=keyboard)
 
 
-# @bot.message_handler(commands=['Event'])
-# def handle_event(message):
-#     user_markup = telebot.types.ReplyKeyboardMarkup(resize_keyboard=True)
-#     keyboard = types.InlineKeyboardMarkup()
-#     url_button = types.InlineKeyboardButton(text="vk.com",url="https://vk.com")
-#     keyboard.add(url_button)
-#     bot.send_message(message.chat.id, "Привет! Нажми на кнопку.", reply_markup=keyboard)
 
-
+#dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
 # @server.route('/' + misc.token, methods=['POST'])
 # def getMessage():
 #     bot.process_new_updates([telebot.types.Update.de_json(request.stream.read().decode("utf-8"))])
 #     return "!", 200
-#
+
 #
 # @server.route("/")
 # def webhook():
@@ -72,9 +64,9 @@ def phone(message):
 #     bot.set_webhook(url='https://telebotvk.herokuapp.com/'+ misc.token)
 #     return "!", 200
 
-
-bot.enable_save_next_step_handlers(delay=2)
-bot.load_next_step_handlers()
+# bot.enable_save_next_step_handlers(delay=2)
+# bot.load_next_step_handlers()
+# dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
 
 if __name__=='__main__':
     facade.startBot()
