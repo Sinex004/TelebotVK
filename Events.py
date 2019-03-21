@@ -1,12 +1,12 @@
 import time
-import schedule
 
 class Event:
-    def __init__(self, amount, cost, host, info):
+    def __init__(self, name, amount, cost, host, info):
+        self.name = name   #name of event
         self.amount = amount
         self.cost = cost
         self.host = host
-        self.info = info
+        self.info = info  # date and other information
         self.book = 0
 
     def booking(self, number, ):

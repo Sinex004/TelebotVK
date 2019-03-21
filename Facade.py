@@ -16,18 +16,17 @@ class _Bot(object):
     def __init__(self):
         self.bot = telebot.TeleBot(misc.token)
 
-    @server.route('/' + misc.token, methods=['POST'])
-    def getMessage(self):
-        self.bot.process_new_updates([telebot.types.Update.de_json(request.stream.read().decode("utf-8"))])
-        return "!", 200
-
-    @server.route("/")
-    def webhook(self):
-        self.bot.remove_webhook()
-        self.bot.set_webhook(url='https://telebotvk.herokuapp.com/' + misc.token)
-        return "!", 200
-
     def bot_start(self):
+        @server.route('/' + misc.token, methods=['POST'])
+        def getMessage(self):
+            self.bot.process_new_updates([telebot.types.Update.de_json(request.stream.read().decode("utf-8"))])
+            return "!", 200
+
+        @server.route("/")
+        def webhook(self):
+            self.bot.remove_webhook()
+            self.bot.set_webhook(url='https://telebotvk.herokuapp.com/' + misc.token)
+            return "!", 200
         server.run(host="0.0.0.0", port=int(os.environ.get('PORT', 5000)))
 
     def getBot(self):
