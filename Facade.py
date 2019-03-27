@@ -13,11 +13,13 @@ class _Logger(object):
 
 
 class _Bot(object):
+    global server
+
     def __init__(self):
         self.bot = telebot.TeleBot(misc.token)
+        self.bot.enable_save_next_step_handlers(delay=2)
+        self.bot.load_next_step_handlers()
 
-    def bot_start(self):
-        #FGFGFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
         @server.route('/' + misc.token, methods=['POST'])
         def getMessage(self):
             self.bot.process_new_updates([telebot.types.Update.de_json(request.stream.read().decode("utf-8"))])
@@ -29,9 +31,8 @@ class _Bot(object):
             self.bot.set_webhook(url='https://telebotvk.herokuapp.com/' + misc.token)
             return "!", 200
 
-        self.bot.enable_save_next_step_handlers(delay=2)
-        self.bot.load_next_step_handlers()
-        #FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+    def bot_start(self):
+        global server
         server.run(host="0.0.0.0", port=int(os.environ.get('PORT', 5000)))
 
     def getBot(self):
