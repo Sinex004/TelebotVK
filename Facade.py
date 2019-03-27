@@ -21,12 +21,12 @@ class _Bot(object):
         self.server = Flask(__name__)
 
         @self.server.route('/' + misc.token, methods=['POST'])
-        def getMessage(self):
+        def getMessage():
             self.bot.process_new_updates([telebot.types.Update.de_json(request.stream.read().decode("utf-8"))])
             return "!", 200
 
         @self.server.route("/")
-        def webhook(self):
+        def webhook():
             self.bot.remove_webhook()
             self.bot.set_webhook(url='https://telebotvk.herokuapp.com/' + misc.token)
             return "!", 200
