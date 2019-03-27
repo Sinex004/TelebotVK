@@ -3,7 +3,6 @@ import logging
 import misc
 import os
 from flask import Flask, request
-server = Flask(__name__)
 
 
 class _Logger(object):
@@ -13,26 +12,25 @@ class _Logger(object):
 
 
 class _Bot(object):
-    global server
+    server = Flask(__name__)
 
     def __init__(self):
         self.bot = telebot.TeleBot(misc.token)
         self.bot.enable_save_next_step_handlers(delay=2)
         self.bot.load_next_step_handlers()
 
-        @server.route('/' + misc.token, methods=['POST'])
-        def getMessage(self):
-            self.bot.process_new_updates([telebot.types.Update.de_json(request.stream.read().decode("utf-8"))])
-            return "!", 200
+    @server.route('/' + misc.token, methods=['POST'])
+    def getMessage(self):
+        self.bot.process_new_updates([telebot.types.Update.de_json(request.stream.read().decode("utf-8"))])
+        return "!", 200
 
-        @server.route("/")
-        def webhook(self):
-            self.bot.remove_webhook()
-            self.bot.set_webhook(url='https://telebotvk.herokuapp.com/' + misc.token)
-            return "!", 200
+    @server.route("/")
+    def webhook(self):
+        self.bot.remove_webhook()
+        self.bot.set_webhook(url='https://telebotvk.herokuapp.com/' + misc.token)
+        return "!", 200
 
     def bot_start(self):
-        global server
         server.run(host="0.0.0.0", port=int(os.environ.get('PORT', 5000)))
 
     def getBot(self):
